@@ -13,7 +13,9 @@ function somma(a, b) {
 console.log('Dichiarativa:', somma(5, 5))   // 10
 
 // Funzione anonima assegnata a una variabile
-const sommaAnonima = (a, b) => a + b;
+const sommaAnonima = function (a, b) {
+    return a + b;
+}
 
 console.log('Anonima in variabile:', sommaAnonima(2, 2))    // 4
 
@@ -92,10 +94,11 @@ Crea un contatore automatico con setInterval
 */
 
 function creaContatoreAutomatico(time) {
+    let counter = 0 // fuori dal return/ funzione closure
     return function () {
-        let counter = 0
         setInterval(() => {
-            console.log(`Contatore: ${++counter}`)
+            counter++
+            console.log(counter)
         }, time)
     }
 }
@@ -113,11 +116,11 @@ Il messaggio deve essere stampato a intervalli regolari, ma si deve fermare dopo
 
 function eseguiEferma(messaggio, start, stop) {
     return function () {
-        const timerStart = setInterval(() => {
+        const intervalId = setInterval(() => {
             console.log('Messaggio temporizzato:', messaggio)
         }, start)
         setTimeout(() => {
-            clearInterval(timerStart)
+            clearInterval(intervalId)
             console.log('Messaggio temporizzato fermato!')
         }, stop)
     }
@@ -134,22 +137,22 @@ Crea una funzione che simula un conto alla rovescia
 con un intervallo di 1 secondo tra ogni numero. Quando arriva a 0, stampa "Tempo scaduto!" e interrompe il timer.
 */
 
-function contoAllaRovescia(num) {
-    return function () {
-        let counter = num
-        const timerStart = setInterval(() => {
-            console.log('Conto alla rovescia:', counter)
-            counter--
-            if (counter === 0) {
-                clearInterval(timerStart)
-                console.log('Conto alla rovescia: Tempo scaduto!')
-            }
-        }, 1000)
-    }
+function contoAllaRovescia(n) {
+    let counter = n // closure
+
+    const intervalId = setInterval(() => {
+        console.log('Conto alla rovescia:', counter)
+        counter--
+
+        if (counter === 0) {
+            console.log('Conto alla rovescia: Tempo scaduto!')
+            clearInterval(intervalId)
+        }
+    }, 1000)
 }
 
-const contoRovescia = contoAllaRovescia(10)
-contoRovescia()
+contoAllaRovescia(10)
+
 
 
 
@@ -161,7 +164,9 @@ Ogni operazione deve essere eseguita in sequenza con un ritardo uguale al tempo 
 
 function sequenzaOperazioni(operations = [], time) {
     operations.forEach((operation, index) => {      // il forEach esegue tutte le operazioni insieme. Perciò per fare la progressione occorre moltiplicare l'indice dell'operazione per il tempo
-        setTimeout(operation, index * time)
+        setTimeout(() => {
+            operation()
+        }, time * index)
     })
 }
 

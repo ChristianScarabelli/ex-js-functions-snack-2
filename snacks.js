@@ -118,10 +118,55 @@ function eseguiEferma(messaggio, start, stop) {
         }, start)
         setTimeout(() => {
             clearInterval(timerStart)
-            console.log('Timer fermato!')
+            console.log('Messaggio temporizzato fermato!')
         }, stop)
     }
 }
 
 const eseguiTimer = eseguiEferma('Timer partito!', 3000, 10000)
 eseguiTimer()
+
+
+
+/* Snack 8 (Bonus)
+Crea una funzione che simula un conto alla rovescia
+- Scrivi una funzione contoAllaRovescia che accetta un numero n e stampa il conto alla rovescia da n a 0, 
+con un intervallo di 1 secondo tra ogni numero. Quando arriva a 0, stampa "Tempo scaduto!" e interrompe il timer.
+*/
+
+function contoAllaRovescia(num) {
+    return function () {
+        let counter = num
+        const timerStart = setInterval(() => {
+            console.log('Conto alla rovescia:', counter)
+            counter--
+            if (counter === 0) {
+                clearInterval(timerStart)
+                console.log('Conto alla rovescia: Tempo scaduto!')
+            }
+        }, 1000)
+    }
+}
+
+const contoRovescia = contoAllaRovescia(10)
+contoRovescia()
+
+
+
+/* Snack 9 (Bonus)
+Creare una funzione che esegue una sequenza di operazioni con ritardi
+Scrivi una funzione sequenzaOperazioni che accetta un array di operazioni (funzioni) e un tempo di intervallo.
+Ogni operazione deve essere eseguita in sequenza con un ritardo uguale al tempo di intervallo.
+*/
+
+function sequenzaOperazioni(operations = [], time) {
+    operations.forEach((operation, index) => {      // il forEach esegue tutte le operazioni insieme. Perciò per fare la progressione occorre moltiplicare l'indice dell'operazione per il tempo
+        setTimeout(operation, index * time)
+    })
+}
+
+sequenzaOperazioni([
+    () => console.log("Operazione 1"),
+    () => console.log("Operazione 2"),
+    () => console.log("Operazione 3")
+], 2000);
